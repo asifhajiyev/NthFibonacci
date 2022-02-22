@@ -12,7 +12,6 @@ var scanner = bufio.NewScanner(os.Stdin)
 
 func main() {
 	var option int
-
 menuLoop:
 	for ok := true; ok; ok = option <= 3 {
 		showOptionMenu()
@@ -45,6 +44,42 @@ menuLoop:
 	}
 }
 
+func showOptionMenu() {
+	fmt.Println("Choose method number to find")
+	fmt.Println(`
+1. Recursion 
+2. Using Dynamic Programming 
+3. Space optimized way
+4. Exit`)
+}
+
+func getInputN() int {
+	fmt.Print("Enter n to find nth fibonacci number: ")
+	scanner.Scan()
+	s := scanner.Text()
+
+	if s == "exit" {
+		return 0
+	}
+	input, err := validateInput(s)
+	if err != nil {
+		fmt.Println(err)
+		return -1
+	}
+	return input
+}
+
+func validateInput(inputAsString string) (int, error) {
+	inputAsNumber, err := strconv.Atoi(inputAsString)
+	if err != nil {
+		return -1, errors.New("non numeric character")
+	}
+	if inputAsNumber <= 0 {
+		return -1, errors.New("not defined")
+	}
+	return inputAsNumber, nil
+}
+
 func fibonacciUsingRecursion(n int) int {
 	if n <= 1 {
 		return n
@@ -71,40 +106,4 @@ func fibonacciUsingSpaceOptimization(n int) int {
 		b = c
 	}
 	return b
-}
-
-func validateInput(inputAsString string) (int, error) {
-	inputAsNumber, err := strconv.Atoi(inputAsString)
-	if err != nil {
-		return -1, errors.New("non numeric character")
-	}
-	if inputAsNumber <= 0 {
-		return -1, errors.New("not defined")
-	}
-	return inputAsNumber, nil
-}
-
-func showOptionMenu() {
-	fmt.Println("Choose method number to find")
-	fmt.Println(`
-1. Recursion 
-2. Using Dynamic Programming 
-3. Space optimized way
-4. Exit`)
-}
-
-func getInputN() int {
-	fmt.Print("Enter n to find nth fibonacci number: ")
-	scanner.Scan()
-	s := scanner.Text()
-
-	if s == "exit" {
-		return 0
-	}
-	input, err := validateInput(s)
-	if err != nil {
-		fmt.Println(err)
-		return -1
-	}
-	return input
 }
